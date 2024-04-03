@@ -19,25 +19,15 @@ data['price'] = '$' + data['price'].round(2).astype(str)
 average_score = data['review_scores_rating'].mean()
 data['review_scores_rating'] = data['review_scores_rating'].fillna(average_score)
 
-german_char_mapping = {
-    'ä': 'ae', 'ö': 'oe', 'ü': 'ue',
-    'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue',
-    'ß': 'ss',  '§': 'ss'
+replacements = {
+    'Rudolfsheim-Fnfhaus': 'Rudolfsheim-Fünfhaus',
+    'Landstra§e': 'Landstraße',
+    'Dbling': 'Döbling',
+    'Whring': 'Währing'
 }
 
-def remove_german_characters(s):
-    if isinstance(s, str):
-        for german_char, ascii_char in german_char_mapping.items():
-            s = s.replace(german_char, ascii_char)
-    return s
-
-
-# Define columns to clean
-columns_to_clean = ['neighbourhood_cleansed','host_neighbourhood']
-
-# Apply the function to clean up specified columns
-for column in columns_to_clean:
-    data[column] = data[column].apply(remove_german_characters)
+for original, replacement in replacements.items():
+    data['neighbourhood_cleansed'] = data['neighbourhood_cleansed'].str.replace(original, replacement)
 
 
 # Save the cleaned data
