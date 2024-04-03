@@ -51,12 +51,42 @@ Below is a sample of the first 20 rows from the dataset, showing a selection of 
 
 Upon initial review, the dataset appears to be well-structured; however, common issues in such datasets that might require attention include:
 
-1. **Missing Values**: Fields like `reviews_per_month` might contain null values, especially for listings without any reviews.
-2. **Inconsistent Data**: The `name` field might contain various formats, making it challenging to extract structured information.
-3. **Incorrect encoding** The `neighbourhood_cleansed` field does not handle german umlauts correctly, they are encoded improperly so they have to be fixed.
-4. **Outliers**: Prices or minimum nights might have unrealistic values due to data entry errors or unique listings.
+1. **Missing Values**: Fields like `reviews_per_month` might contain null values, especially for listings without any reviews. So we filled missing review scores with the average score.
+```python
+average_score = data['review_scores_rating'].mean()
+data['review_scores_rating'] = data['review_scores_rating'].fillna(average_score)
+```
 
-Example of a Python snippet to handle missing values:
+2. **Inconsistent Data**: The `name` field might contain various formats, making it challenging to extract structured information. So we standarized the name and neighbourhood by capitalizing it.
+```python
+data['name'] = data['name'].str.title()
+data['neighbourhood'] = data['neighbourhood'].str.title()
+```
+3. **Incorrect encoding** The `neighbourhood_cleansed` field does not handle german umlauts correctly, they are encoded improperly so they have to be fixed. So we encoded them properly.
+```python
+replacements = {
+    'Rudolfsheim-Fnfhaus': 'Rudolfsheim-Fünfhaus',
+    'Landstra§e': 'Landstraße',
+    'Dbling': 'Döbling',
+    'Whring': 'Währing'
+}
+
+for original, replacement in replacements.items():
+    data['neighbourhood_cleansed'] = data['neighbourhood_cleansed'].str.replace(original, replacement)
+```
+
+4. **Outliers**: Prices or minimum nights might have unrealistic values due to data entry errors or unique listings. So we removed extreme values.
+We did this by using this code 
+```python
+# Remove dollar signs and commas, then convert to float
+data['price'] = data['price'].str.replace('$', '').str.replace(',', '').astype(float)
+
+# Perform the filtering
+data = data[(data['price'] > 0) & (data['price'] <= 10000)]
+
+# When adding the dollar sign back, consider formatting the float to two decimal places
+data['price'] = '$' + data['price'].round(2).astype(str)
+```
 
 
 ## Part 2
