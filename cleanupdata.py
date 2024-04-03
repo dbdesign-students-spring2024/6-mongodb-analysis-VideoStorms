@@ -22,8 +22,9 @@ data['review_scores_rating'] = data['review_scores_rating'].fillna(average_score
 german_char_mapping = {
     'ä': 'ae', 'ö': 'oe', 'ü': 'ue',
     'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue',
-    'ß': 'ss', 
+    'ß': 'ss',  '§': 'ss'
 }
+
 def remove_german_characters(s):
     if isinstance(s, str):
         for german_char, ascii_char in german_char_mapping.items():
