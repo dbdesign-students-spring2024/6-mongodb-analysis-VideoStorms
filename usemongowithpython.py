@@ -17,13 +17,13 @@ connection = pymongo.MongoClient(db_host, db_port,
 # Select your database and collection
 collection = connection[db_name][db_collection_name]
 
+# the collection variable will be a reference to your collection
+docs = collection.find({}).limit(10) # get the first 10 documents
+print(docs)
+
 # Your MongoDB query
-query = {"$and": [{"beds": {"$gt": 2}}, {"neighborhood": "Your Neighborhood Here"}]}
-projection = {"_id": 0, "name": 1, "beds": 1, "review_scores_rating": 1, "price": 1}
+#query = {"$and": [{"beds": {"$gt": 2}}, {"neighborhood": "Your Neighborhood Here"}]}
+#projection = {"_id": 0, "name": 1, "beds": 1, "review_scores_rating": 1, "price": 1}
 
 # Execute the query and sort the results
-docs = collection.find(query, projection).sort("review_scores_rating", pymongo.DESCENDING)
-
-# Print the results
-for doc in docs:
-    print(doc)
+#docs = collection.find(query, projection).sort("review_scores_rating", pymongo.DESCENDING)
