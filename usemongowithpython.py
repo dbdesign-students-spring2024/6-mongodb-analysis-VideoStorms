@@ -18,8 +18,12 @@ connection = pymongo.MongoClient(db_host, db_port,
 collection = connection[db_name][db_collection_name]
 
 # the collection variable will be a reference to your collection
-docs = collection.find({}).limit(10) # get the first 10 documents
-print(docs)
+# Fetching the first 10 documents
+docs = collection.find({}).limit(10)
+
+# Iterating through the documents and printing them
+for doc in docs:
+    print(doc)
 
 # Your MongoDB query
 #query = {"$and": [{"beds": {"$gt": 2}}, {"neighborhood": "Your Neighborhood Here"}]}
