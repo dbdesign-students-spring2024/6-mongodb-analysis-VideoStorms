@@ -1291,3 +1291,228 @@ The result we get is
 
 This allows us to gain additional insight as it allows us to see all the units a certain person has, you would be unable to do this just looking at a CSV table. So we can see that Ingela has a lot of properties across vienna.
 
+### Find all the unique `host_name` values:
+
+The code we would use is
+
+```javascript
+db.listings.distinct("host_name")
+```
+
+This gives the results of
+
+```javascript
+[
+  '',
+  '4beds&More',
+  'A',
+  'ADO Apartments',
+  'Aaron',
+  'Aashima',
+  'AbaiApartments',
+  'Abdelrahman',
+  'Abdullah',
+  'Abieshomes',
+  'Abigail',
+  'Abraham',
+  'AdInfinitum Philip Bea Sophia',
+  'Ada',
+  'Adam',
+  'Adele',
+  'Adelheid',
+  'Adelin',
+  'Adelina',
+  'Adem',
+  'Adesina',
+  'Adi',
+  'Adiam',
+  'Adin',
+  'Adina',
+  'Adis',
+  'Adisa',
+  'Adnan',
+  'Ado',
+  'Adoniran',
+  'Adrian',
+  'Adriana',
+  'Adriano',
+  'Adrien Adnan',
+  'Adrijana',
+  'Adrián',
+  'Aelia',
+  'Agata',
+  'Aglaë',
+  'Agnes',
+  'Agnese',
+  'Agnieszka',
+  'Ahmad',
+  'Ahmed',
+  'Ahmet',
+  'Aida',
+  'Aifuwa',
+  'Aisha',
+  'Ajla',
+  'Akram',
+  'Al',
+  'Alaa',
+  'Alan',
+  'Albena',
+  'Albert',
+  'Albi',
+  'Albino',
+  'Aldin',
+  'Aleks',
+  'Aleksandar',
+  'Aleksander',
+  'Aleksandra',
+  'Alen',
+  'Alena',
+  'Alessa',
+  'Alessandra',
+  'Alex',
+  'Alexa',
+  'Alexander',
+  'Alexandra',
+  'Alexis',
+  'Alfred',
+  'Alfred Und Christina',
+  'Alfredo',
+  'Ali',
+  'Alice',
+  'Alin',
+  'Alina',
+  'Alina-Zoe',
+  'Aline',
+  'Alireza',
+  'Aliz',
+  'Allesgute',
+  'Alma',
+  'Almina',
+  'Almuthana',
+  'Alois',
+  'Alon',
+  'Alp',
+  'Alpheus',
+  'Altstadt',
+  'Alvina',
+  'Amadeus',
+  'Amal',
+  'Amanda',
+  'Ambi',
+  'Amel',
+  'Amelie',
+  'Amets',
+  'Amila',
+  ... 2157 more items
+]
+```
+
+### Find all of the places that have more than 2 beds in a neighborhood of your choice (referred to as either the neighborhood or neighbourhood_group_cleansed fields in the data file), ordered by review_scores_rating descending
+
+```javascript
+   db.listings.find({
+     neighbourhood_cleansed: "Leopoldstadt",
+     beds: { $gt: 2 }
+   }, {
+     name: 1, beds: 1, review_scores_rating: 1, price: 1
+   }).sort({ review_scores_rating: -1 })
+```
+Results -
+
+```javascript
+[
+  {
+    _id: ObjectId('660dbb6fb6515eb20577be87'),
+    name: 'Condo In Vienna · 2 Bedrooms · 5 Beds · 1 Bath',
+    beds: 5,
+    price: '$130.0',
+    review_scores_rating: 5
+  },
+  {
+    _id: ObjectId('660dbb6fb6515eb20577c0a1'),
+    name: 'Rental Unit In Vienna · ★5.0 · 3 Bedrooms · 7 Beds · 2 Baths',
+    beds: 7,
+    price: '$600.0',
+    review_scores_rating: 5
+  },
+  {
+    _id: ObjectId('660dbb6fb6515eb20577c0a5'),
+    name: 'Rental Unit In Vienna · ★5.0 · 2 Bedrooms · 3 Beds · 1 Bath',
+    beds: 3,
+    price: '$690.0',
+    review_scores_rating: 5
+  },
+```
+
+### Show the number of listings per host
+
+```javascript
+   db.listings.aggregate([
+     { $group: { _id: "$host_id", total_listings: { $sum: 1 } } }
+   ])
+```
+
+Results -
+
+```javascript
+[
+  { _id: 44586496, total_listings: 1 },
+  { _id: 181573153, total_listings: 1 },
+  { _id: 235177184, total_listings: 2 },
+  { _id: 543488122, total_listings: 1 },
+  { _id: 79783186, total_listings: 1 },
+  { _id: 84640349, total_listings: 3 },
+  { _id: 286154252, total_listings: 1 },
+  { _id: 200729542, total_listings: 1 },
+  { _id: 547234192, total_listings: 1 },
+  { _id: 547210496, total_listings: 1 },
+  { _id: 449662778, total_listings: 1 },
+  { _id: 453229602, total_listings: 1 },
+  { _id: 9836276, total_listings: 1 },
+  { _id: 8521814, total_listings: 1 },
+  { _id: 550537818, total_listings: 1 },
+  { _id: 12414611, total_listings: 1 },
+  { _id: 550368379, total_listings: 1 },
+  { _id: 64972585, total_listings: 1 },
+  { _id: 545179285, total_listings: 1 },
+  { _id: 79417889, total_listings: 1 }
+]
+Type "it" for more
+```
+
+### Find the average review_scores_rating per neighborhood, and only show those that are 4 or above, sorted in descending order of rating
+
+```javascript
+db.listings.aggregate([
+...      { $group: { _id: "$neighbourhood_cleansed", average_rating: { $avg: "$review_scores_rating" } } },
+...      { $match: { average_rating: { $gte: 4 } } },
+...      { $sort: { average_rating: -1 } }
+...    ])
+```
+
+
+```javascript
+[
+  { _id: 'Liesing', average_rating: 4.7939905134427985 },
+  { _id: 'Döbling', average_rating: 4.768722591771372 },
+  { _id: 'Josefstadt', average_rating: 4.754121286349162 },
+  { _id: 'Wieden', average_rating: 4.750768406628369 },
+  { _id: 'Neubau', average_rating: 4.747602269021976 },
+  { _id: 'Innere Stadt', average_rating: 4.736504100641129 },
+  { _id: 'Penzing', average_rating: 4.732053903842683 },
+  { _id: 'Mariahilf', average_rating: 4.731167375536374 },
+  { _id: 'Alsergrund', average_rating: 4.728490823363518 },
+  { _id: 'Landstraße', average_rating: 4.72527020052918 },
+  { _id: 'Donaustadt', average_rating: 4.712564657537411 },
+  { _id: 'Simmering', average_rating: 4.712401569676746 },
+  { _id: 'Brigittenau', average_rating: 4.699766026258683 },
+  { _id: 'Meidling', average_rating: 4.6866687918875245 },
+  { _id: 'Hernals', average_rating: 4.683787267338725 },
+  { _id: 'Rudolfsheim-Fünfhaus', average_rating: 4.682146265520776 },
+  { _id: 'Floridsdorf', average_rating: 4.675555609513288 },
+  { _id: 'Währing', average_rating: 4.669469768779703 },
+  { _id: 'Leopoldstadt', average_rating: 4.665109423964703 },
+  { _id: 'Ottakring', average_rating: 4.656255943039626 }
+]
+Type "it" for more
+```
