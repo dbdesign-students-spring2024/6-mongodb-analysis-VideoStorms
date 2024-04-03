@@ -19,6 +19,23 @@ data['price'] = '$' + data['price'].round(2).astype(str)
 average_score = data['review_scores_rating'].mean()
 data['review_scores_rating'] = data['review_scores_rating'].fillna(average_score)
 
+german_char_mapping = {
+    'ä': 'ae', 'ö': 'oe', 'ü': 'ue',
+    'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue',
+    'ß': 'ss', 
+}
+
+def remove_german_characters(s):
+    for german_char, ascii_char in german_char_mapping.items():
+        s = s.replace(german_char, ascii_char)
+    return s
+
+# Apply the function to clean up the 'neighbourhood_cleansed' column
+data['neighbourhood_cleansed'] = data['neighbourhood_cleansed'].apply(remove_german_characters)
+
 
 # Save the cleaned data
 data.to_csv('listings_clean.csv', index=False)
+
+
+
