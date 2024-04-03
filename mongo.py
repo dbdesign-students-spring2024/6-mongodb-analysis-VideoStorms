@@ -1,14 +1,12 @@
 import pymongo
 
-# Replace these variables with your actual database information
 db_host = "class-mongodb.cims.nyu.edu"
 db_port = 27017
-db_username = "rg4071"  # Your NYU ID or username for MongoDB
-db_password = "P5rZ6aci"  # Your MongoDB password
-db_name = "rg4071"  # Your database name, probably your NYU ID
+db_username = "rg4071"  
+db_password = "P5rZ6aci"  
+db_name = "rg4071"  
 db_collection_name = "listings"
 
-# Connect to MongoDB
 connection = pymongo.MongoClient(db_host, db_port,
                                  username=db_username,
                                  password=db_password,
