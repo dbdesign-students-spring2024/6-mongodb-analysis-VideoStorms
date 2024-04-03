@@ -24,18 +24,20 @@ german_char_mapping = {
     'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue',
     'ß': 'ss', 
 }
-
 def remove_german_characters(s):
-    for german_char, ascii_char in german_char_mapping.items():
-        s = s.replace(german_char, ascii_char)
+    if isinstance(s, str):
+        for german_char, ascii_char in german_char_mapping.items():
+            s = s.replace(german_char, ascii_char)
     return s
 
-# Apply the function to clean up the 'neighbourhood_cleansed' column
-data['neighbourhood_cleansed'] = data['neighbourhood_cleansed'].apply(remove_german_characters)
+
+# Define columns to clean
+columns_to_clean = ['neighbourhood_cleansed','host_neighbourhood']
+
+# Apply the function to clean up specified columns
+for column in columns_to_clean:
+    data[column] = data[column].apply(remove_german_characters)
 
 
 # Save the cleaned data
 data.to_csv('listings_clean.csv', index=False)
-
-
-
