@@ -51,18 +51,18 @@ Below is a sample of the first 23 rows from the dataset, showing a selection of 
 
 Upon initial review, the dataset appears to be well-structured; however, common issues in such datasets that might require attention include:
 
-1. **Missing Values**: Fields like `reviews_per_month` might contain null values, especially for listings without any reviews. So we filled missing review scores with the average score.
+1. **Missing Values**: Fields like `reviews_per_month` might contain null values, especially for listings without any reviews. So we filled missing review scores with the average score. We did this by using this code.
 ```python
 average_score = data['review_scores_rating'].mean()
 data['review_scores_rating'] = data['review_scores_rating'].fillna(average_score)
 ```
 
-2. **Inconsistent Data**: The `name` field might contain various formats, making it challenging to extract structured information. So we standarized the name and neighbourhood by capitalizing it.
+2. **Inconsistent Data**: The `name` field might contain various formats, making it challenging to extract structured information. So we standarized the name and neighbourhood by capitalizing it by using this code.
 ```python
 data['name'] = data['name'].str.title()
 data['neighbourhood'] = data['neighbourhood'].str.title()
 ```
-3. **Incorrect encoding** The `neighbourhood_cleansed` field does not handle german umlauts correctly, they are encoded improperly so they have to be fixed. So we encoded them properly.
+3. **Incorrect encoding** The `neighbourhood_cleansed` field does not handle german umlauts correctly, they are encoded improperly so they have to be fixed. So we encoded them properly by using this code.
 ```python
 replacements = {
     'Rudolfsheim-Fnfhaus': 'Rudolfsheim-Fünfhaus',
