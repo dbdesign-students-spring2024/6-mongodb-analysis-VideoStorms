@@ -529,6 +529,7 @@ This might allow us to look closer at the data than just someone looking at the 
 
 ### Choose two hosts (by reffering to their host_id values) who are superhosts (available in the host_is_superhost field), and show all of the listings offered by both of the two hosts
 
+This allows us to see all the listings that these hosts have
 
 ```javascript
    db.listings.find(
@@ -708,6 +709,8 @@ This allows us to gain additional insight as it allows us to see all the units a
 
 ### Find all the unique `host_name` values:
 
+This will show us all the unique hosts in Vienna
+
 The code we would use is
 
 ```javascript
@@ -822,7 +825,11 @@ This gives the results of
 ]
 ```
 
+The insight this would bring is to have a list of every single host in Vienna and have them listed to be able to quickly refer to them. This would also allow an easy search to find if a name is on the host list.
+
 ### Find all of the places that have more than 2 beds in a neighborhood of your choice (referred to as either the neighborhood or neighbourhood_group_cleansed fields in the data file), ordered by review_scores_rating descending
+
+This finds all of the places with 2 or more beds in the neighborhood
 
 ```javascript
    db.listings.find({
@@ -859,7 +866,11 @@ Results -
   },
 ```
 
+This would be useful in picking a place to stay in Vienna that has 2 bedrooms in your preferred neighbourhood as you would just pick a high rated place, this would not be able to be done just by looking at the data in the csv. For example Condo In Vienna · 2 Bedrooms · 5 Beds · 1 Bath, looks like a good place to rent.
+
 ### Show the number of listings per host
+
+This shows the number of listings per host
 
 ```javascript
    db.listings.aggregate([
@@ -894,6 +905,9 @@ Results -
 ]
 Type "it" for more
 ```
+
+This allows us to see how many listings each host has, so we can see if a host has multiple listings or not which would allow us to see how much market domination there is or to see if hosts having multiple listings is common or not. So for example we would be able to see that user 84640349 has 3 listings.
+
 
 ### Find the average review_scores_rating per neighborhood, and only show those that are 4 or above, sorted in descending order of rating
 
@@ -931,3 +945,65 @@ db.listings.aggregate([
 ]
 Type "it" for more
 ```
+
+This would allow us to see which neighbourhoods are the highest averaged rated, for example we would be able to come to the conclusion that Liesing is the best neighborhood to stay in taking only average ratings into account.
+
+## Extra-credit
+
+This assignment deserves extra credit because I used Python to connect to the MongoDB database and perform some of the queries in your analysis
+
+I did so with this code
+
+```python
+import pymongo
+
+db_host = "class-mongodb.cims.nyu.edu"
+db_port = 27017
+db_username = "rg4071"  
+db_password = "P5rZ6aci"  
+db_name = "rg4071"  
+db_collection_name = "listings"
+
+connection = pymongo.MongoClient(db_host, db_port,
+                                 username=db_username,
+                                 password=db_password,
+                                 authSource=db_name)
+
+collection = connection[db_name][db_collection_name]
+
+
+result = collection.find(
+    {'neighbourhood_cleansed': 'Leopoldstadt', 'beds': {'$gt': 2}},
+    {'name': 1, 'beds': 1, 'review_scores_rating': 1, 'price': 1}
+).sort('review_scores_rating', -1)
+
+for doc in result:
+    print(doc)
+```
+
+Which gives the output
+
+```javascript
+{'_id': ObjectId('660dbb6fb6515eb20577be87'), 'name': 'Condo In Vienna · 2 Bedrooms · 5 Beds · 1 Bath', 'beds': 5.0, 'price': '$130.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0a1'), 'name': 'Rental Unit In Vienna · ★5.0 · 3 Bedrooms · 7 Beds · 2 Baths', 'beds': 7.0, 'price': '$600.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0a5'), 'name': 'Rental Unit In Vienna · ★5.0 · 2 Bedrooms · 3 Beds · 1 Bath', 'beds': 3.0, 'price': '$690.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0d5'), 'name': 'Rental Unit In Vienna · ★5.0 · 2 Bedrooms · 5 Beds · 1 Bath', 'beds': 5.0, 'price': '$130.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0fa'), 'name': 'Rental Unit In Vienna · ★5.0 · 1 Bedroom · 3 Beds · 1.5 Baths', 'beds': 3.0, 'price': '$245.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0fb'), 'name': 'Rental Unit In Vienna · ★5.0 · 1 Bedroom · 3 Beds · 1.5 Baths', 'beds': 3.0, 'price': '$245.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0fc'), 'name': 'Rental Unit In Vienna · ★5.0 · 1 Bedroom · 3 Beds · 1.5 Baths', 'beds': 3.0, 'price': '$245.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb6fb6515eb20577c0fd'), 'name': 'Rental Unit In Vienna · ★5.0 · 1 Bedroom · 3 Beds · 1.5 Baths', 'beds': 3.0, 'price': '$245.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577c451'), 'name': 'Rental Unit In Vienna · ★5.0 · 2 Bedrooms · 3 Beds · 1 Bath', 'beds': 3.0, 'price': '$86.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577c460'), 'name': 'Rental Unit In Vienna · 2 Bedrooms · 6 Beds · 1 Bath', 'beds': 6.0, 'price': '$130.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577cab8'), 'name': 'Rental Unit In Vienna · ★5.0 · 2 Bedrooms · 4 Beds · 2.5 Baths', 'beds': 4.0, 'price': '$300.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577cb35'), 'name': 'Rental Unit In Vienna · 2 Bedrooms · 4 Beds · 1.5 Baths', 'beds': 4.0, 'price': '$201.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577cc9b'), 'name': 'Rental Unit In Vienna · 2 Bedrooms · 4 Beds · 1.5 Baths', 'beds': 4.0, 'price': '$75.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577cce7'), 'name': 'Hotel In Vienna · ★5.0 · 1 Bedroom · 4 Beds · 1 Private Bath', 'beds': 4.0, 'price': '$246.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577cced'), 'name': 'Hotel In Vienna · ★5.0 · 1 Bedroom · 5 Beds · 1 Private Bath', 'beds': 5.0, 'price': '$265.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577ccee'), 'name': 'Hotel In Vienna · 1 Bedroom · 5 Beds · 1 Private Bath', 'beds': 5.0, 'price': '$265.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577ccf0'), 'name': 'Hotel In Vienna · 1 Bedroom · 5 Beds · 1 Private Bath', 'beds': 5.0, 'price': '$265.0', 'review_scores_rating': 5.0}
+{'_id': ObjectId('660dbb70b6515eb20577d282'), 'name': 'Condo In Vienna · ★5.0 · 2 Bedrooms · 3 Beds · 1.5 Baths', 'beds': 3.0, 'price': '$130.0', 'review_scores_rating': 5.0}
+...
+...
+...
+```
+(Note - rest of results cut for brevity)

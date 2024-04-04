@@ -12,7 +12,6 @@ connection = pymongo.MongoClient(db_host, db_port,
                                  password=db_password,
                                  authSource=db_name)
 
-# Select your database and collection
 collection = connection[db_name][db_collection_name]
 
 
