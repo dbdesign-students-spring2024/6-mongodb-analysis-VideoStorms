@@ -268,7 +268,7 @@ The result we get is
 ]
 ```
 
-This might bring insights on 2 data points in the data.
+This might bring insights on 2 data points in the data. As we can see how listings differ in terms of amenities, location, and host details.
 
 ### Show exactly 10 documents in any order, but "prettyprint" in easier to read format, using the pretty() function
 This query will use pretty in order to make it easier to read
@@ -525,7 +525,7 @@ The result we get is
 ]
 ```
 
-This might allow us to look closer at the data than just someone looking at the table allowing us to come to better conclusions
+This might allow us to look closer at the data than just someone looking at the table allowing us to come to better conclusions. Ratings and host information can help in identifying top-performing hosts and listings
 
 ### Choose two hosts (by reffering to their host_id values) who are superhosts (available in the host_is_superhost field), and show all of the listings offered by both of the two hosts
 
@@ -705,7 +705,8 @@ The result we get is
 ]
 ```
 
-This allows us to gain additional insight as it allows us to see all the units a certain person has, you would be unable to do this just looking at a CSV table. So we can see that Ingela has a lot of properties across vienna.
+This allows us to gain additional insight as it allows us to see all the units a certain person has, you would be unable to do this just looking at a CSV table. So we can see that Ingela has a lot of properties across vienna. This suggests a professionalization trend among top-rated Airbnb hosts, who might be leveraging their reputation and experience to cater to diverse guest needs, from budget accommodations to luxury experiences.
+
 
 ### Find all the unique `host_name` values:
 
@@ -906,7 +907,7 @@ Results -
 Type "it" for more
 ```
 
-This allows us to see how many listings each host has, so we can see if a host has multiple listings or not which would allow us to see how much market domination there is or to see if hosts having multiple listings is common or not. So for example we would be able to see that user 84640349 has 3 listings.
+This allows us to see how many listings each host has, so we can see if a host has multiple listings or not which would allow us to see how much market domination there is or to see if hosts having multiple listings is common or not. So for example we would be able to see that user 84640349 has 3 listings. Basically we can see how many are individuals offering a single property versus more commercial hosts managing multiple listings.
 
 
 ### Find the average review_scores_rating per neighborhood, and only show those that are 4 or above, sorted in descending order of rating
@@ -946,11 +947,11 @@ db.listings.aggregate([
 Type "it" for more
 ```
 
-This would allow us to see which neighbourhoods are the highest averaged rated, for example we would be able to come to the conclusion that Liesing is the best neighborhood to stay in taking only average ratings into account.
+This would allow us to see which neighbourhoods are the highest averaged rated, for example we would be able to come to the conclusion that Liesing is the best neighborhood to stay in taking only average ratings into account. This insight could guide potential guests in choosing where to stay and highlight areas where hosts could focus on improvement. For city planners and businesses, these insights could inform tourism strategies and local development initiatives.
 
 ## Extra-credit
 
-This assignment deserves extra credit because I used Python to connect to the MongoDB database and perform some of the queries in my analysis
+This assignment deserves extra credit because I used Python to connect to the MongoDB database and perform some of the queries in myhat analysis
 
 I did so with this code
 
