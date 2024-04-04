@@ -525,7 +525,7 @@ The result we get is
 ]
 ```
 
-This might allow us to look closer at the data than just someone looking at the table allowing us to come to better conclusions. Ratings and host information can help in identifying top-performing hosts and listings
+This might allow us to look closer at the data than just someone looking at the table allowing us to come to better conclusions. Ratings and host information can help in identifying top-performing hosts and listings. Examination of 10 listings provides insights into the varied accommodation options
 
 ### Choose two hosts (by reffering to their host_id values) who are superhosts (available in the host_is_superhost field), and show all of the listings offered by both of the two hosts
 
@@ -947,7 +947,7 @@ db.listings.aggregate([
 Type "it" for more
 ```
 
-This would allow us to see which neighbourhoods are the highest averaged rated, for example we would be able to come to the conclusion that Liesing is the best neighborhood to stay in taking only average ratings into account. This insight could guide potential guests in choosing where to stay and highlight areas where hosts could focus on improvement. For city planners and businesses, these insights could inform tourism strategies and local development initiatives.
+This would allow us to see which neighbourhoods are the highest averaged rated, for example we would be able to come to the conclusion that Liesing is the best neighborhood to stay in taking only average ratings into account. This insight could guide potential guests in choosing where to stay and highlight areas where hosts could focus on improvement. For city planners and businesses, these insights could inform tourism strategies and local development initiatives. The average ratings by neighborhood also reveal the high standards of accommodations across Vienna, with even the lowest averages being above 4.
 
 ## Extra-credit
 
