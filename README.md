@@ -951,7 +951,7 @@ This would allow us to see which neighbourhoods are the highest averaged rated, 
 
 ## Extra-credit
 
-This assignment deserves extra credit because I used Python to connect to the MongoDB database and perform some of the queries in myhat analysis
+This assignment deserves extra credit because I used Python to connect to the MongoDB database and perform some of the queries in my analysis
 
 I did so with this code
 
@@ -1008,3 +1008,5 @@ Which gives the output
 ...
 ```
 (Note - rest of results cut for brevity)
+
+This is why I believe I deserve extra credit.
